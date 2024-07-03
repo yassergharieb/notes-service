@@ -3,7 +3,12 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\NoteController;
 
-Route::controller(NoteController::class)
+
+Route::get('/' , function () {
+
+    echo  "sksks";
+});
+Route::controller (NoteController::class)
     ->prefix('note')
     ->name("note.")
     ->middleware('CheckUser')

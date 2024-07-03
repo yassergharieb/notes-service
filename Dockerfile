@@ -1,4 +1,4 @@
-FROM php:8.2 as php
+FROM php:8.1 as php
 
 RUN apt-get update -y
 RUN apt-get install -y unzip libpq-dev libcurl4-gnutls-dev
@@ -18,5 +18,6 @@ COPY . .
 
 COPY --from=composer:2.3.5 /usr/bin/composer /usr/bin/composer
 
+CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000"]
 ENV PORT=8000
 

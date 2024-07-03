@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Predis\Client;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,5 +15,23 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+
+    $redisPrefix = env('REDIS_PREFIX');
+
+    $publisher = new Client([
+        "host" => env('REDIS_HOST'),
+        "password" => env('REDIS_PASSWORD'),
+        "port" => env("REDIS_PORT"),
+    ]);
+
+    $publisher->publish(
+        $redisPrefix.'user_added_note',
+        json_encode([
+            'type' => 'user_added_note',
+            'user_id' => 10,
+            'note_id' => 50,
+        ])
+    );
+
+//    return view('welcome');
 });

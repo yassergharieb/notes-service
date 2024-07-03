@@ -15,11 +15,12 @@ services:
         volumes:
             - ./:/var/www
         ports:
-            - 8889:80
-            - 8009:8000
+            - 8000:8000
         depends_on:
             - database
         tty: true
+        networks:
+            - my-network
 
     # Database Server
     database:
@@ -33,17 +34,26 @@ services:
             - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
         volumes:
             - db-data:/var/lib/mysql
+        networks:
+            - my-network
 
     phpmyadmin:
         image: phpmyadmin
         restart: always
         ports:
-            - 9990:80
+            - 9999:80
         environment:
             - PMA_ARBITRARY=1
             - PMA_HOST=database
             - PMA_USER=${DB_USERNAME}
             - PMA_PASSWORD=${DB_PASSWORD}
+        networks:
+            - my-network
+
 
 volumes:
     db-data: ~
+
+networks:
+    my-network:
+        external: true
